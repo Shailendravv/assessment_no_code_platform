@@ -71,4 +71,53 @@ export const useStore = create((set, get) => ({
         });
       }
     },
+    clipboard: { nodes: [], edges: [] },
+    copy: () => {
+      const selectedNodes = get().nodes.filter((n) => n.selected);
+      const selectedEdges = get().edges.filter((e) => e.selected);
+      set({ clipboard: { nodes: JSON.parse(JSON.stringify(selectedNodes)), edges: JSON.parse(JSON.stringify(selectedEdges)) } });
+    },
+    paste: () => {
+      const { nodes: cbNodes, edges: cbEdges } = get().clipboard;
+      if (cbNodes.length === 0) return;
+
+      const idMap = {};
+      const newNodes = cbNodes.map((node) => {
+        const newId = get().getNodeID(node.type);
+        idMap[node.id] = newId;
+        return {
+          ...node,
+          id: newId,
+          position: { x: node.position.x + 20, y: node.position.y + 20 },
+          selected: true,
+          data: { ...node.data, id: newId },
+        };
+      });
+
+      const newEdges = cbEdges.map((edge) => {
+        const newId = `e-${idMap[edge.source]}-${idMap[edge.target]}`;
+        return {
+          ...edge,
+          id: newId,
+          source: idMap[edge.source],
+          target: idMap[edge.target],
+          selected: true,
+        };
+      });
+
+      // Deselect current selection
+      const deselectedNodes = get().nodes.map(n => ({ ...n, selected: false }));
+      const deselectedEdges = get().edges.map(e => ({ ...e, selected: false }));
+
+      set({
+        nodes: [...deselectedNodes, ...newNodes],
+        edges: [...deselectedEdges, ...newEdges],
+      });
+    },
+    selectAll: () => {
+      set({
+        nodes: get().nodes.map(n => ({ ...n, selected: true })),
+        edges: get().edges.map(e => ({ ...e, selected: true })),
+      });
+    },
   }));

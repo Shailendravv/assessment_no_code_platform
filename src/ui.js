@@ -2,7 +2,7 @@
 // Displays the drag-and-drop UI
 // --------------------------------------------------
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
@@ -34,6 +34,10 @@ const selector = (state) => ({
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+  copy: state.copy,
+  paste: state.paste,
+  selectAll: state.selectAll,
+  deleteSelected: state.deleteSelected,
 });
 
 export const PipelineUI = () => {
@@ -47,8 +51,47 @@ export const PipelineUI = () => {
       addNode,
       onNodesChange,
       onEdgesChange,
-      onConnect
+      onConnect,
+      copy,
+      paste,
+      selectAll,
+      deleteSelected,
     } = useStore(selector, shallow);
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            const isCtrl = event.ctrlKey || event.metaKey;
+            
+            // Delete / Backspace
+            if (event.key === 'Delete' || event.key === 'Backspace') {
+                // Only delete if not typing in an input
+                if (event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
+                    deleteSelected();
+                }
+            }
+
+            // Ctrl + C (Copy)
+            if (isCtrl && event.key === 'c') {
+                copy();
+            }
+
+            // Ctrl + V (Paste)
+            if (isCtrl && event.key === 'v') {
+                paste();
+            }
+
+            // Ctrl + A (Select All)
+            if (isCtrl && event.key === 'a') {
+                if (event.target.tagName !== 'INPUT' && event.target.tagName !== 'TEXTAREA') {
+                    event.preventDefault();
+                    selectAll();
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [copy, paste, selectAll, deleteSelected]);
 
     const getInitNodeData = (nodeID, type) => {
       let nodeData = { id: nodeID, nodeType: `${type}` };

@@ -11,7 +11,7 @@ import { FileText } from 'lucide-react';
 export const TextNode = ({ id, data }) => {
   const [currText, setCurrText] = useState(data?.text || '{{input}}');
 
-  const { width, height, textareaRef } = useAutoResize(currText, { minWidth: 220, minHeight: 100 });
+  const { width, height, textareaRef } = useAutoResize(currText, { minWidth: 250, minHeight: 180 });
   const variableHandles = useVariableHandles(id, currText);
 
   const handleTextChange = (e) => {
@@ -31,16 +31,19 @@ export const TextNode = ({ id, data }) => {
       handles={handles} 
       style={{ width, height }}
     >
-      <div className="flex flex-col gap-2 h-full">
-        <label className="text-[11px] font-bold uppercase tracking-wider text-white">
+      <div className="flex flex-col gap-2 flex-1 min-h-0">
+        <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
           Content
         </label>
-        <Textarea
-          ref={textareaRef}
-          value={currText}
-          onChange={handleTextChange}
-          className="flex-1 bg-black/40 border-border/40 focus:border-accent text-white text-xs resize-none min-h-[60px]"
-        />
+        <div className="flex-1 min-h-0 relative">
+          <Textarea
+            ref={textareaRef}
+            value={currText}
+            onChange={handleTextChange}
+            className="w-full h-full bg-black/20 border-border/50 hover:border-border focus:border-accent text-white text-[13px] resize-none transition-all duration-200 rounded-lg p-3"
+            placeholder="Type your prompt here... use {{variable}} for dynamic inputs"
+          />
+        </div>
       </div>
     </BaseNode>
   );

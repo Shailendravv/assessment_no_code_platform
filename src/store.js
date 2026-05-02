@@ -1,6 +1,7 @@
 // store.js
 
 import { createWithEqualityFn } from "zustand/traditional";
+import { persist } from 'zustand/middleware';
 import {
     addEdge,
     applyNodeChanges,
@@ -8,10 +9,13 @@ import {
     MarkerType,
   } from 'reactflow';
 
-export const useStore = createWithEqualityFn((set, get) => ({
-    nodes: [],
-    edges: [],
-    interactMode: 'pan',
+export const useStore = createWithEqualityFn(
+  persist(
+    (set, get) => ({
+      nodes: [],
+      edges: [],
+      nodeIDs: {},
+      interactMode: 'pan',
     setInteractMode: (mode) => set({ interactMode: mode }),
     getNodeID: (type) => {
         const newIDs = {...get().nodeIDs};
@@ -55,6 +59,8 @@ export const useStore = createWithEqualityFn((set, get) => ({
     },
     clearCanvas: () => {
       set({ nodes: [], edges: [] });
+      set({ nodeIDs: {} });
+      set({ clipboard: { nodes: [], edges: [] } });
     },
     deleteSelected: () => {
       const selectedNodes = get().nodes.filter((n) => n.selected);
@@ -120,4 +126,8 @@ export const useStore = createWithEqualityFn((set, get) => ({
         edges: get().edges.map(e => ({ ...e, selected: true })),
       });
     },
-  }));
+  }),
+  {
+    name: 'pipeline-state-storage',
+  }
+));

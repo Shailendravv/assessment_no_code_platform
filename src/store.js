@@ -66,17 +66,27 @@ export const useStore = createWithEqualityFn(
       const selectedNodes = get().nodes.filter((n) => n.selected);
       const selectedEdges = get().edges.filter((e) => e.selected);
       
+      const nodeIdsToRemove = selectedNodes.map(n => n.id);
+
       if (selectedNodes.length > 0) {
         set({
           nodes: applyNodeChanges(selectedNodes.map(n => ({ id: n.id, type: 'remove' })), get().nodes),
         });
+
+        // Also remove edges connected to these nodes
+        const remainingEdges = get().edges.filter(
+          (edge) => !nodeIdsToRemove.includes(edge.source) && !nodeIdsToRemove.includes(edge.target)
+        );
+        set({ edges: remainingEdges });
       }
+
       if (selectedEdges.length > 0) {
         set({
           edges: applyEdgeChanges(selectedEdges.map(e => ({ id: e.id, type: 'remove' })), get().edges),
         });
       }
     },
+
     clipboard: { nodes: [], edges: [] },
     copy: () => {
       const selectedNodes = get().nodes.filter((n) => n.selected);

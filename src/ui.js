@@ -12,6 +12,7 @@ import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
 import { TextNode } from './nodes/textNode';
 import { MathNode } from './nodes/MathNode';
+import { nodeConfigs } from './nodes/nodeConfigs';
 
 import 'reactflow/dist/style.css';
 
@@ -94,7 +95,16 @@ export const PipelineUI = () => {
     }, [copy, paste, selectAll, deleteSelected]);
 
     const getInitNodeData = (nodeID, type) => {
+      const config = nodeConfigs[type];
       let nodeData = { id: nodeID, nodeType: `${type}` };
+      
+      // Initialize with defaults from config
+      if (config && config.fields) {
+        config.fields.forEach(field => {
+          nodeData[field.name] = field.default;
+        });
+      }
+      
       return nodeData;
     }
 
@@ -130,6 +140,7 @@ export const PipelineUI = () => {
         },
         [reactFlowInstance, getNodeID, addNode]
     );
+
 
     const onDragOver = useCallback((event) => {
         event.preventDefault();

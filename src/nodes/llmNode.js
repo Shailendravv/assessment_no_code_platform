@@ -1,28 +1,22 @@
 // llmNode.js
 
-import { Position } from 'reactflow';
 import { BaseNode } from './BaseNode';
 import { Cpu } from 'lucide-react';
+import { nodeConfigs } from './nodeConfigs';
 
-export const LLMNode = ({ id, data }) => {
-  const handles = [
-    { id: `${id}-system`, type: 'target', position: Position.Left, style: { top: '33%' } },
-    { id: `${id}-prompt`, type: 'target', position: Position.Left, style: { top: '67%' } },
-    { id: `${id}-response`, type: 'source', position: Position.Right },
-  ];
-
+export const LLMNode = (props) => {
   return (
     <BaseNode 
-      label="LLM" 
-      id={id} 
+      {...props}
+      nodeConfig={nodeConfigs.llm}
       icon={<Cpu size={16} />}
-      handles={handles}
     >
-      <div className="py-2">
-        <p className="text-xs text-text-primary/80 leading-relaxed">
-          This is a Large Language Model. It processes system messages and prompts to generate responses.
+      <div className="py-1">
+        <p className="text-[10px] text-text-muted leading-relaxed italic">
+          Large Language Model for processing system prompts and variables.
         </p>
       </div>
     </BaseNode>
   );
 }
+

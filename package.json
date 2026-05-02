@@ -1,0 +1,64 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@radix-ui/react-select": "^2.2.6",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.14.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "reactflow": "^11.8.3",
+    "tailwind-merge": "^3.5.0",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^fast-check$": "<rootDir>/node_modules/fast-check/lib/cjs/fast-check.js",
+      "^pure-rand/generator/congruential32$": "<rootDir>/node_modules/pure-rand/lib/generator/congruential32.js",
+      "^pure-rand/generator/mersenne$": "<rootDir>/node_modules/pure-rand/lib/generator/mersenne.js",
+      "^pure-rand/generator/xorshift128plus$": "<rootDir>/node_modules/pure-rand/lib/generator/xorshift128plus.js",
+      "^pure-rand/generator/xoroshiro128plus$": "<rootDir>/node_modules/pure-rand/lib/generator/xoroshiro128plus.js",
+      "^pure-rand/utils/skipN$": "<rootDir>/node_modules/pure-rand/lib/utils/skipN.js",
+      "^pure-rand/distribution/uniformBigInt$": "<rootDir>/node_modules/pure-rand/lib/distribution/uniformBigInt.js",
+      "^pure-rand/distribution/uniformInt$": "<rootDir>/node_modules/pure-rand/lib/distribution/uniformInt.js"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(fast-check|pure-rand)/)"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "fast-check": "^4.7.0",
+    "postcss": "^8.5.13",
+    "tailwindcss": "^3.4.19"
+  }
+}

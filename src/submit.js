@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
+
 // ResultBanner sub-component
 const ResultBanner = ({ result, error }) => {
     if (!result && !error) return null;
 
-    const baseClasses = "mt-3 p-2.5 rounded-[6px] text-[13px] font-sans max-w-[320px] text-left";
+    const baseClasses = "mb-3 p-2.5 rounded-[6px] text-[13px] font-sans max-w-[320px] text-left shadow-lg";
 
     if (result) {
         return (
@@ -97,10 +98,10 @@ export const SubmitButton = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col-reverse items-center justify-center">
             <button
                 type="submit"
-                className={`submit-btn px-5 py-2 rounded-[6px] text-[13px] font-sans transition-all duration-150
+                className={`submit-btn px-5 py-2 rounded-[6px] text-[13px] font-sans transition-all duration-150 shadow-md
                     ${loading 
                         ? 'bg-accent-hover opacity-70 cursor-not-allowed' 
                         : 'bg-accent hover:bg-accent-hover text-text-primary cursor-pointer'

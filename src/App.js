@@ -10,10 +10,10 @@ function App() {
       </header>
       <main className='flex-1 relative z-10'>
         <PipelineUI />
+        <div className='absolute bottom-6 left-1/2 -translate-x-1/2 z-20'>
+          <SubmitButton />
+        </div>
       </main>
-      <footer className='p-4 border-t border-border bg-background'>
-        <SubmitButton />
-      </footer>
     </div>
   );
 }

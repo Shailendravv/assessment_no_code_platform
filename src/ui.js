@@ -28,6 +28,7 @@ const nodeTypes = {
 const selector = (state) => ({
   nodes: state.nodes,
   edges: state.edges,
+  interactMode: state.interactMode,
   getNodeID: state.getNodeID,
   addNode: state.addNode,
   onNodesChange: state.onNodesChange,
@@ -41,6 +42,7 @@ export const PipelineUI = () => {
     const {
       nodes,
       edges,
+      interactMode,
       getNodeID,
       addNode,
       onNodesChange,
@@ -83,7 +85,7 @@ export const PipelineUI = () => {
             addNode(newNode);
           }
         },
-        [reactFlowInstance]
+        [reactFlowInstance, getNodeID, addNode]
     );
 
     const onDragOver = useCallback((event) => {
@@ -107,6 +109,9 @@ export const PipelineUI = () => {
                 proOptions={proOptions}
                 snapGrid={[gridSize, gridSize]}
                 connectionLineType='smoothstep'
+                panOnDrag={interactMode === 'pan'}
+                selectionOnDrag={interactMode === 'select'}
+                selectionMode="box"
                 style={{ background: 'var(--color-surface)' }}
             >
                 <Background color='var(--color-border)' gap={gridSize} />

@@ -11,6 +11,8 @@ import {
 export const useStore = create((set, get) => ({
     nodes: [],
     edges: [],
+    interactMode: 'pan',
+    setInteractMode: (mode) => set({ interactMode: mode }),
     getNodeID: (type) => {
         const newIDs = {...get().nodeIDs};
         if (newIDs[type] === undefined) {
@@ -50,5 +52,23 @@ export const useStore = create((set, get) => ({
           return node;
         }),
       });
+    },
+    clearCanvas: () => {
+      set({ nodes: [], edges: [] });
+    },
+    deleteSelected: () => {
+      const selectedNodes = get().nodes.filter((n) => n.selected);
+      const selectedEdges = get().edges.filter((e) => e.selected);
+      
+      if (selectedNodes.length > 0) {
+        set({
+          nodes: applyNodeChanges(selectedNodes.map(n => ({ id: n.id, type: 'remove' })), get().nodes),
+        });
+      }
+      if (selectedEdges.length > 0) {
+        set({
+          edges: applyEdgeChanges(selectedEdges.map(e => ({ id: e.id, type: 'remove' })), get().edges),
+        });
+      }
     },
   }));

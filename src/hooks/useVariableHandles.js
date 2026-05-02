@@ -42,11 +42,12 @@ function useVariableHandles(nodeId, text) {
 
   // Build HandleDescriptor objects with evenly-spaced top positions.
   return uniqueValidNames.map((variableName, i) => ({
-    id: `${nodeId}-${variableName}`,
+    id: variableName,
     type: 'target',
     position: Position.Left,
     style: { top: `${((i + 1) / (n + 1)) * 100}%` },
   }));
 }
+
 
 export default useVariableHandles;

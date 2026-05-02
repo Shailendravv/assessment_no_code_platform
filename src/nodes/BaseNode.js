@@ -107,7 +107,7 @@ export const BaseNode = ({ id, data, nodeConfig, icon, children, selected, style
             <Handle
               type="target"
               position={h.position}
-              id={h.id}
+              id={`${id}-${h.id}`}
               className="!w-3 !h-3 !border-2 !border-surface !bg-[#60a5fa] hover:!scale-150 !transition-transform"
             />
             <span className="absolute left-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-[10px] text-white px-1.5 py-0.5 rounded whitespace-nowrap border border-border/50">
@@ -127,12 +127,13 @@ export const BaseNode = ({ id, data, nodeConfig, icon, children, selected, style
             <Handle
               type="source"
               position={h.position}
-              id={h.id}
+              id={`${id}-${h.id}`}
               className="!w-3 !h-3 !border-2 !border-surface !bg-[#34d399] hover:!scale-150 !transition-transform"
             />
           </div>
         ))}
       </div>
+
     </div>
   );
 };

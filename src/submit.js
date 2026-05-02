@@ -2,32 +2,17 @@
 
 import { useState } from 'react';
 import { useStore } from './store';
-import { theme } from './styles/theme';
 import { shallow } from 'zustand/shallow';
-
 // ResultBanner sub-component
 const ResultBanner = ({ result, error }) => {
     if (!result && !error) return null;
 
-    const bannerStyle = {
-        marginTop: '12px',
-        padding: '10px 14px',
-        borderRadius: theme.radii.button,
-        fontSize: theme.font.sizeBase,
-        fontFamily: theme.font.family,
-        maxWidth: '320px',
-        textAlign: 'left',
-    };
+    const baseClasses = "mt-3 p-2.5 rounded-[6px] text-[13px] font-sans max-w-[320px] text-left";
 
     if (result) {
         return (
             <div
-                style={{
-                    ...bannerStyle,
-                    backgroundColor: '#1a3a2a',
-                    border: '1px solid #2e6b4a',
-                    color: theme.colors.textPrimary,
-                }}
+                className={`${baseClasses} bg-[#1a3a2a] border border-[#2e6b4a] text-text-primary`}
                 data-testid="result-banner-success"
             >
                 <div><strong>Nodes:</strong> {result.num_nodes}</div>
@@ -39,12 +24,7 @@ const ResultBanner = ({ result, error }) => {
 
     return (
         <div
-            style={{
-                ...bannerStyle,
-                backgroundColor: '#3a1a1a',
-                border: '1px solid #6b2e2e',
-                color: '#f08080',
-            }}
+            className={`${baseClasses} bg-[#3a1a1a] border border-[#6b2e2e] text-[#f08080]`}
             data-testid="result-banner-error"
         >
             {error}
@@ -116,24 +96,15 @@ export const SubmitButton = () => {
         }
     };
 
-    const buttonStyle = {
-        backgroundColor: loading ? theme.colors.accentHover : theme.colors.accent,
-        color: theme.colors.textPrimary,
-        borderRadius: theme.radii.button,
-        border: 'none',
-        padding: '8px 20px',
-        fontSize: theme.font.sizeBase,
-        fontFamily: theme.font.family,
-        cursor: loading ? 'not-allowed' : 'pointer',
-        opacity: loading ? 0.7 : 1,
-    };
-
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="flex flex-col items-center justify-center">
             <button
                 type="submit"
-                className="submit-btn"
-                style={buttonStyle}
+                className={`submit-btn px-5 py-2 rounded-[6px] text-[13px] font-sans transition-all duration-150
+                    ${loading 
+                        ? 'bg-accent-hover opacity-70 cursor-not-allowed' 
+                        : 'bg-accent hover:bg-accent-hover text-text-primary cursor-pointer'
+                    }`}
                 disabled={loading}
                 onClick={handleSubmit}
             >

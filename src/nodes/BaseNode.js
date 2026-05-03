@@ -1,6 +1,7 @@
 // BaseNode.js
 // Shared shell for all pipeline node types.
 
+import React from 'react';
 import { Handle } from 'reactflow';
 import { useStore } from '../store';
 import { cn } from '../lib/utils';
@@ -13,14 +14,19 @@ import {
   SelectValue,
 } from '../ui/select';
 import { Slider } from '../ui/slider';
+import { nodeConfigs } from './nodeConfigs';
 
 /**
  * BaseNode — shared shell for all pipeline node types.
+ * It can be used directly for simple nodes or as a wrapper for complex ones.
  */
-export const BaseNode = ({ id, data, nodeConfig, icon, children, selected, style }) => {
+export const BaseNode = (props) => {
+  const { id, data, nodeConfig: manualConfig, selected, style, type } = props;
   const updateNodeField = useStore((state) => state.updateNodeField);
 
-  const { label, color, fields = [], handles = { inputs: [], outputs: [] } } = nodeConfig || {};
+  // Use manual config if provided (e.g. for dynamic nodes), otherwise look up by type
+  const nodeConfig = manualConfig || nodeConfigs[type] || {};
+  const { label, color, fields = [], handles = { inputs: [], outputs: [] }, icon: Icon } = nodeConfig;
 
   const handleFieldChange = (name, value) => {
     updateNodeField(id, name, value);
@@ -39,12 +45,11 @@ export const BaseNode = ({ id, data, nodeConfig, icon, children, selected, style
         className="flex items-center gap-2 px-4 py-2.5 border-b border-border/50 rounded-t-xl bg-white/[0.03]"
         style={{ borderTop: `3px solid ${color || 'var(--color-accent)'}` }}
       >
-        {icon && <span className="text-accent shrink-0">{icon}</span>}
+        {Icon && <Icon size={16} className="text-accent shrink-0" />}
         <span className="font-bold text-[11px] uppercase tracking-wider text-white truncate">
           {label || 'Node'}
         </span>
       </div>
-
 
       {/* Body */}
       <div className="p-4 flex flex-col gap-4">
@@ -97,12 +102,12 @@ export const BaseNode = ({ id, data, nodeConfig, icon, children, selected, style
           </div>
         ))}
 
-        {children}
+        {props.children}
       </div>
 
       {/* Input Handles (Left) */}
       <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-center gap-6 -translate-x-1/2 pointer-events-none">
-        {handles.inputs.map((h, idx) => (
+        {handles.inputs.map((h) => (
           <div key={h.id} className="relative flex items-center group pointer-events-auto">
             <Handle
               type="target"
@@ -119,7 +124,7 @@ export const BaseNode = ({ id, data, nodeConfig, icon, children, selected, style
 
       {/* Output Handles (Right) */}
       <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-center gap-6 translate-x-1/2 pointer-events-none">
-        {handles.outputs.map((h, idx) => (
+        {handles.outputs.map((h) => (
           <div key={h.id} className="relative flex items-center justify-end group pointer-events-auto">
             <span className="absolute right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-[10px] text-white px-1.5 py-0.5 rounded whitespace-nowrap border border-border/50">
               {h.label}
@@ -133,8 +138,8 @@ export const BaseNode = ({ id, data, nodeConfig, icon, children, selected, style
           </div>
         ))}
       </div>
-
     </div>
   );
 };
+
 

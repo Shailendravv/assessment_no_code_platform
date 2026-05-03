@@ -7,24 +7,27 @@ import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 import { theme } from './styles/theme';
-import { InputNode } from './nodes/inputNode';
-import { LLMNode } from './nodes/llmNode';
-import { OutputNode } from './nodes/outputNode';
+import { BaseNode } from './nodes/BaseNode';
 import { TextNode } from './nodes/textNode';
-import { MathNode } from './nodes/MathNode';
 import { nodeConfigs } from './nodes/nodeConfigs';
 
 import 'reactflow/dist/style.css';
 
+
 const gridSize = 20;
 const proOptions = { hideAttribution: true };
-const nodeTypes = {
-  customInput: InputNode,
-  llm: LLMNode,
-  customOutput: OutputNode,
-  text: TextNode,
-  math: MathNode,
-};
+
+// Build nodeTypes dynamically from nodeConfigs
+// If a custom component exists (like TextNode), use it. Otherwise, use BaseNode.
+const nodeTypes = Object.keys(nodeConfigs).reduce((acc, type) => {
+  if (type === 'text') {
+    acc[type] = TextNode;
+  } else {
+    acc[type] = BaseNode;
+  }
+  return acc;
+}, {});
+
 
 const selector = (state) => ({
   nodes: state.nodes,

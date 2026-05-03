@@ -3,6 +3,8 @@
 import { DraggableNode } from "./draggableNode";
 import { useStore } from "./store";
 import { Hand, MousePointer2 } from "lucide-react";
+import { nodeConfigs } from "./nodes/nodeConfigs";
+
 
 export const PipelineToolbar = () => {
   const clearCanvas = useStore((state) => state.clearCanvas);
@@ -50,12 +52,11 @@ export const PipelineToolbar = () => {
       <div className="h-6 w-px bg-border mx-1" />
 
       <div className="flex flex-wrap gap-2.5 items-center">
-        <DraggableNode type="customInput" label="Input" />
-        <DraggableNode type="llm" label="LLM" />
-        <DraggableNode type="customOutput" label="Output" />
-        <DraggableNode type="text" label="Text" />
-        <DraggableNode type="math" label="Math" />
+        {Object.entries(nodeConfigs).map(([type, config]) => (
+          <DraggableNode key={type} type={type} label={config.label} />
+        ))}
       </div>
+
 
       <div className="h-6 w-px bg-border mx-2" />
 

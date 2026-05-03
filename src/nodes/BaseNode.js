@@ -32,6 +32,55 @@ export const BaseNode = (props) => {
     updateNodeField(id, name, value);
   };
 
+  const renderHandles = (handleList, handleType) => {
+    const isTarget = handleType === 'target';
+    const sideClass = isTarget ? "left-0" : "right-0";
+    const containerClass = isTarget ? "-translate-x-1/2" : "translate-x-1/2";
+    
+    return (
+      <div className={cn("absolute top-0 bottom-0 pointer-events-none", sideClass, containerClass)}>
+        {handleList.map((h, i) => {
+          // If no style is provided, space them evenly
+          const defaultStyle = {
+            top: `${((i + 1) / (handleList.length + 1)) * 100}%`
+          };
+          const handleStyle = h.style || defaultStyle;
+
+          return (
+            <div 
+              key={h.id} 
+              className={cn("absolute flex items-center group pointer-events-auto", isTarget ? "left-0" : "right-0 justify-end")}
+              style={handleStyle}
+            >
+              {isTarget && (
+                <Handle
+                  type="target"
+                  position={h.position}
+                  id={`${id}-${h.id}`}
+                  className="!w-3 !h-3 !border-2 !border-surface !bg-[#60a5fa] hover:!scale-150 !transition-transform"
+                />
+              )}
+              <span className={cn(
+                "absolute opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-[10px] text-white px-1.5 py-0.5 rounded whitespace-nowrap border border-border/50",
+                isTarget ? "left-4" : "right-4"
+              )}>
+                {h.label || h.id}
+              </span>
+              {!isTarget && (
+                <Handle
+                  type="source"
+                  position={h.position}
+                  id={`${id}-${h.id}`}
+                  className="!w-3 !h-3 !border-2 !border-surface !bg-[#34d399] hover:!scale-150 !transition-transform"
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div
       className={cn(
@@ -105,41 +154,8 @@ export const BaseNode = (props) => {
         {props.children}
       </div>
 
-      {/* Input Handles (Left) */}
-      <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-center gap-6 -translate-x-1/2 pointer-events-none">
-        {handles.inputs.map((h) => (
-          <div key={h.id} className="relative flex items-center group pointer-events-auto">
-            <Handle
-              type="target"
-              position={h.position}
-              id={`${id}-${h.id}`}
-              className="!w-3 !h-3 !border-2 !border-surface !bg-[#60a5fa] hover:!scale-150 !transition-transform"
-            />
-            <span className="absolute left-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-[10px] text-white px-1.5 py-0.5 rounded whitespace-nowrap border border-border/50">
-              {h.label}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {/* Output Handles (Right) */}
-      <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-center gap-6 translate-x-1/2 pointer-events-none">
-        {handles.outputs.map((h) => (
-          <div key={h.id} className="relative flex items-center justify-end group pointer-events-auto">
-            <span className="absolute right-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-[10px] text-white px-1.5 py-0.5 rounded whitespace-nowrap border border-border/50">
-              {h.label}
-            </span>
-            <Handle
-              type="source"
-              position={h.position}
-              id={`${id}-${h.id}`}
-              className="!w-3 !h-3 !border-2 !border-surface !bg-[#34d399] hover:!scale-150 !transition-transform"
-            />
-          </div>
-        ))}
-      </div>
+      {renderHandles(handles.inputs, 'target')}
+      {renderHandles(handles.outputs, 'source')}
     </div>
   );
 };
-
-

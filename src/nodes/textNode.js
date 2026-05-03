@@ -1,7 +1,6 @@
 // textNode.js
 
-import { useState, useEffect } from 'react';
-import { Position } from 'reactflow';
+import { useState } from 'react';
 import { BaseNode } from './BaseNode';
 import useAutoResize from '../hooks/useAutoResize';
 import useVariableHandles from '../hooks/useVariableHandles';
@@ -15,6 +14,7 @@ export const TextNode = (props) => {
   const updateNodeField = useStore((state) => state.updateNodeField);
   const [currText, setCurrText] = useState(data?.text || '');
 
+  // Custom hooks for auto-resizing and variable handle extraction
   const { width, height, textareaRef } = useAutoResize(currText, { minWidth: 250, minHeight: 180 });
   const variableHandles = useVariableHandles(id, currText);
 
@@ -24,6 +24,7 @@ export const TextNode = (props) => {
     updateNodeField(id, 'text', newText);
   };
 
+  // Combine static output handle with dynamic variable input handles
   const handles = {
     inputs: variableHandles,
     outputs: nodeConfigs.text.handles.outputs
@@ -36,11 +37,11 @@ export const TextNode = (props) => {
       icon={<FileText size={16} />}
       style={{ width, height }}
     >
-      <div className="flex flex-col gap-2 flex-1 min-h-0">
+      <div className="flex flex-col gap-2 flex-1 min-h-0 h-full">
         <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
           Content
         </label>
-        <div className="flex-1 min-h-0 relative">
+        <div className="flex-1 min-h-0 relative h-full">
           <Textarea
             ref={textareaRef}
             value={currText}
@@ -53,4 +54,3 @@ export const TextNode = (props) => {
     </BaseNode>
   );
 }
-

@@ -23,11 +23,10 @@ export const PipelineToolbar = () => {
         <button
           onClick={() => setInteractMode("pan")}
           className={`w-10 h-8 rounded-xl flex items-center justify-center transition-all duration-150
-                        ${
-                          interactMode === "pan"
-                            ? "bg-[#3b3d54] text-white"
-                            : "text-[#8892a4] hover:text-white hover:bg-white/5"
-                        }`}
+                        ${interactMode === "pan"
+              ? "bg-[#3b3d54] text-white"
+              : "text-[#8892a4] hover:text-white hover:bg-white/5"
+            }`}
           title="Hand Tool (Pan)"
         >
           <Hand size={15} strokeWidth={interactMode === "pan" ? 2.5 : 2} />
@@ -35,11 +34,10 @@ export const PipelineToolbar = () => {
         <button
           onClick={() => setInteractMode("select")}
           className={`w-10 h-8 rounded-xl flex items-center justify-center transition-all duration-150
-                        ${
-                          interactMode === "select"
-                            ? "bg-[#3b3d54] text-white"
-                            : "text-[#8892a4] hover:text-white hover:bg-white/5"
-                        }`}
+                        ${interactMode === "select"
+              ? "bg-[#3b3d54] text-white"
+              : "text-[#8892a4] hover:text-white hover:bg-white/5"
+            }`}
           title="Selection Tool"
         >
           <MousePointer2
@@ -65,11 +63,10 @@ export const PipelineToolbar = () => {
           onClick={deleteSelected}
           disabled={!hasSelection}
           className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-150 border
-                        ${
-                          hasSelection
-                            ? "bg-red-500/10 border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white"
-                            : "bg-surface border-border text-text-muted cursor-not-allowed opacity-50"
-                        }`}
+                        ${hasSelection
+              ? "bg-red-500/10 border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white"
+              : "bg-surface border-border text-text-muted cursor-not-allowed opacity-50"
+            }`}
         >
           Delete Selected
         </button>

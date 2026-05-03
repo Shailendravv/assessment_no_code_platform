@@ -13,7 +13,7 @@ import { nodeConfigs } from './nodeConfigs';
 export const TextNode = (props) => {
   const { id, data } = props;
   const updateNodeField = useStore((state) => state.updateNodeField);
-  const [currText, setCurrText] = useState(data?.text || '{{input}}');
+  const [currText, setCurrText] = useState(data?.text || '');
 
   const { width, height, textareaRef } = useAutoResize(currText, { minWidth: 250, minHeight: 180 });
   const variableHandles = useVariableHandles(id, currText);
@@ -30,7 +30,7 @@ export const TextNode = (props) => {
   };
 
   return (
-    <BaseNode 
+    <BaseNode
       {...props}
       nodeConfig={{ ...nodeConfigs.text, handles }}
       icon={<FileText size={16} />}

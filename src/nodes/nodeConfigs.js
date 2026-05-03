@@ -125,7 +125,7 @@ export const nodeConfigs = {
     ],
     handles: {
       inputs: [
-        { id: 'x', label: 'X', position: Position.Left },
+        // { id: 'x', label: 'X', position: Position.Left },
         { id: 'y', label: 'Y', position: Position.Left },
       ],
       outputs: [{ id: 'result', label: 'Result', position: Position.Right }],
